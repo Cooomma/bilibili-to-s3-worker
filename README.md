@@ -3,7 +3,7 @@ Download Video from Bilibili, Change video container, and Upload to S3
 
 ## Prerequisites
 * FFmpeg
-* (annie)[https://github.com/iawia002/annie]
+* [Annie](https://github.com/iawia002/annie)
 
 ## Docker
 
