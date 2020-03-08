@@ -10,6 +10,4 @@ RUN apt update && apt install -y --no-install-recommends ffmpeg awscli
 COPY --from=annie_builder /builder/annie/annie /usr/bin/annie
 COPY ./worker.py /usr/bin/worker
 RUN chmod 755 /usr/bin/worker
-ENV AWS_ACCESS_KEY_ID
-ENV AWS_SECRET_ACCESS_KEY
 CMD [ "/usr/bin/worker" ]
