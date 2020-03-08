@@ -8,8 +8,8 @@ RUN git clone https://github.com/iawia002/annie.git && \
 FROM python:3.8.2-slim-buster
 RUN apt update && apt install -y --no-install-recommends ffmpeg awscli
 COPY --from=annie_builder /builder/annie/annie /usr/bin/annie
-COPY ./worker /usr/bin
-RUN chmod 755 /usr/bin/worker.py
+COPY ./worker.py /usr/bin/worker
+RUN chmod 755 /usr/bin/worker
 ENV AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_ACCESS_KEY
-CMD [ "/usr/bin/worker.py" ]
+CMD [ "/usr/bin/worker" ]
