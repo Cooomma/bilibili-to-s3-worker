@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+    build:
+        working_directory: /app
+        docker:
+            - image: docker:stable-dind
+        steps:
+            - checkout
+            - setup_remote_docker
+            - run:
+                name: Install AWS CLI
+                command: |
+                    apk add --no-cache awscli
+            - run:
+                name: Build application Docker image
+                command: |
+                    docker build -t 954868670540.dkr.ecr.ap-northeast-1.amazonaws.com/nogi-backup/nogi-backup-worker .
+            - deploy:
+                name: Push application Docker image
+                command: |
+                    if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                        login="$(aws ecr get-login)"
+                        ${login}
+                        docker push 954868670540.dkr.ecr.ap-northeast-1.amazonaws.com/nogi-backup/nogi-backup-worker
+                    fi
+workflows:
+    main:
+        jobs:
+            - build
