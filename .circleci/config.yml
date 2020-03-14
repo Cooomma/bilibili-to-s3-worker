@@ -3,13 +3,9 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@6.7.1
 
-jobs:
-    - build:
-        repo: nogi-backup
-        tag: 'latest'
-        no-output-timeout: 15m
-
 workflows:
-    main:
+    simple_build_and_push:
         jobs:
-            - build
+            - aws-ecr/build-and-push-image:
+                repo: nogi-backup-worker
+                tag: 'latest'
