@@ -1,32 +1,14 @@
 version: 2.1
 
+orbs:
+  aws-ecr: circleci/aws-ecr@6.7.1
+
 jobs:
-    build:
-        working_directory: /app
-        docker:
-            - image: docker:stable-dind
-        steps:
-            - checkout
-            - setup_remote_docker
-            - run:
-                name: Install AWS CLI
-                command: |
-                    apk add --no-cache curl
-                    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-                    unzip awscliv2.zip
-                    sudo ./aws/install
-            - run:
-                name: Build application Docker image
-                command: |
-                    docker build -t 954868670540.dkr.ecr.ap-northeast-1.amazonaws.com/nogi-backup/nogi-backup-worker .
-            - deploy:
-                name: Push application Docker image
-                command: |
-                    if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                        login="$(aws ecr get-login)"
-                        ${login}
-                        docker push 954868670540.dkr.ecr.ap-northeast-1.amazonaws.com/nogi-backup/nogi-backup-worker
-                    fi
+    - build:
+        repo: nogi-backup
+        tag: 'latest'
+        no-output-timeout: 15m
+
 workflows:
     main:
         jobs:
